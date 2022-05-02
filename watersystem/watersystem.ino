@@ -1,91 +1,64 @@
 int IN1 = 2;
-//int IN2 = 3;
-//int IN3 = 4;
-//int IN4 = 5;
+int IN2 = 3; // Vi starter med at definere alle vores pins som kommer til at tænde og slukke for pumperne i vores switch board
 
-int Pin1 = A0; 
-//int Pin2 = A1;
-//int Pin3 = A2;
-//int Pin4 = A3;
+int Pin1 = A0;
+int Pin2 = A1; //Dette er vores pins som modtager data fra vores fugt måler
 
 float value1 = 0;
-//float value2 = 0;
-//float value3 = 0;
-//float value4 = 0;
-void setup() {
-  Serial.begin(9600);
-  pinMode(IN1, OUTPUT);
-  //pinMode(IN2, OUTPUT);
-  //pinMode(IN3, OUTPUT);
-  //pinMode(IN4, OUTPUT);
-  
-  pinMode(Pin1, INPUT);
-  //pinMode(Pin2, INPUT);
- // pinMode(Pin3, INPUT);
-  //pinMode(Pin4, INPUT);
-  
-  digitalWrite(IN1, HIGH);
-  //digitalWrite(IN2, HIGH);
- // digitalWrite(IN3, HIGH);
- // digitalWrite(IN4, HIGH);
-  delay(500);
-}
-void loop() {
+float value2 = 0; //Disse variabler er vores værdier fra fugtmåleren
 
-  Serial.print("MOISTURE LEVEL:");
-  value1 = analogRead(Pin1);
-  float moisPercent = map(value1, 570, 253, 0, 100);
-  Serial.print(moisPercent);
-  Serial.println("%");
-  if(moisPercent>80)
+void setup() { //Vores setup funktion
+  Serial.begin(9600); //Her fortæller vi vores arduino hvor hurtigt den skal sende data til vores sketch monitor(vores data vindue)
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);// Vi definere bare vores pins IN1 og IN2 til at de skal sende et signal ud istedet for at modtage et
+
+  pinMode(Pin1, INPUT); //Her sætter vi vores Pin1 og Pin2 til at de skal modtage data og signaler
+  pinMode(Pin2, INPUT);
+
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, HIGH); //Her sætter vi vores pins IN1 og IN2 til at de skal udsende en strøm, som man kan se ved at pumperne starter
+
+  delay(500); // Vi venter bare lige et halvt sekund
+}
+void loop() { //Her begynder det sjove
+
+  Serial.print("MOISTURE LEVEL1:"); //Vi sætter programmet til at skrive MOISTURE LEVEL1: på vores sketch monitor
+  value1 = analogRead(Pin1); // Vi læser dataet fra Pin1 som får data fra vores ene fugtmåler
+  float moisPercent1 = map(value1, 570, 253, 0, 100); // Vi sætter dataet fra fra fugtmåleren op så den bliver delt op i procent.
+  //Den er delt op i (vores værdi fra fugtmåleren, maks værdi mulig, mindste værdi muligt, mindste procent, højeste procent)
+  Serial.print(moisPercent1); //Her skriver vi vores fugt niveau i procent på vores sketch monitor
+  Serial.println("%");// Så skriver vi bare % for at vi kan se det er % på vores sketch monitor
+  if (moisPercent1 > 80) //Her spørger vi programmet om fugt niveauet er over 80%
   {
-      digitalWrite(IN1, LOW);
+    digitalWrite(IN1, LOW); // Hvis ja sætter vi IN1 til LOW så den ikke udsender en strøm, og effektivt slukker for pumpen
   }
-  else
+  else // Hvis den ikke er over 80%, så gør vi nedenstående
   {
-    digitalWrite(IN1, HIGH);
-    delay(1000);
-    digitalWrite(IN1, LOW);
-    delay(3000);
-    }
-    
- /* Serial.print("MOISTURE LEVEL:");
+    digitalWrite(IN1, HIGH); // Vi sætter IN1 til HIGH så vi for den til at udsende en strøm, og effektivt tænder pumpen
+    delay(10000); //så venter vi i 10 sekunder mens den pumper vand med pumpen
+    digitalWrite(IN1, LOW); // nu slukker vi den så igen ved at sætte IN1 til LOW
+    delay(30000); // nu venter vi så 30 sekunder så vandet kan nå at fordele sig før vi tager endnu en måling
+  }
+
+  Serial.print("MOISTURE LEVEL2:");
   value2 = analogRead(Pin2);
-  Serial.println(value2);
-  if(value2>750)
+  float moisPercent2 = map(value2, 570, 253, 0, 100);
+  Serial.println(moisPercent2);
+  Serial.println("%");
+  if (moisPercent2 > 80)
   {
-      digitalWrite(IN2, LOW);
+    digitalWrite(IN2, LOW);
   }
   else
   {
     digitalWrite(IN2, HIGH);
-    }
-
-  Serial.print("MOISTURE LEVEL:");
-  value3 = analogRead(Pin3);
-  Serial.println(value3);
-  if(value3>750)
-  {
-      digitalWrite(IN3, LOW);
+    delay(10000);
+    digitalWrite(IN2, LOW);
+    delay(30000);
   }
-  else
-  {
-    digitalWrite(IN3, HIGH);
-    }
+  // I den her blok gør vi præcist det samme som før men bare for vores anden fugtmåler, pumpe, og de to andre pins
 
-  Serial.print("MOISTURE LEVEL:");
-  value4 = analogRead(Pin4);
-  Serial.println(value4);
-  if(value4>750)
-  {
-      digitalWrite(IN4, LOW);
-  }
-  else
-  {
-    digitalWrite(IN4, HIGH);
-    }
-    Serial.println();*/
-  
-  digitalWrite(IN1, LOW);
-  delay(1000);
+  digitalWrite(IN1, LOW);//Her slukker programmet for den ene pumpe for at kunne bedst at tage den næste måling
+  digitalWrite(IN2, LOW); //Her slukker programmet for den anden pumpe for at kunne bedst at tage den næste måling
+  delay(30000);//Her venter programmet i 30 sekunder på at tage en ny måling
 }
