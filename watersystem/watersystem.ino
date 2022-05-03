@@ -25,7 +25,7 @@ void loop() { //Her begynder det sjove
   Serial.print("MOISTURE LEVEL1:"); //Vi sætter programmet til at skrive MOISTURE LEVEL1: på vores sketch monitor
   value1 = analogRead(Pin1); // Vi læser dataet fra Pin1 som får data fra vores ene fugtmåler
   float moisPercent1 = map(value1, 570, 253, 0, 100); // Vi sætter dataet fra fra fugtmåleren op så den bliver delt op i procent.
-  //Den er delt op i (vores værdi fra fugtmåleren, maks værdi mulig, mindste værdi muligt, mindste procent, højeste procent)
+  //Den er delt op i (vores værdi fra fugtmåleren, mindste værdi mulig, maks værdi muligt, mindste nye værdi, højeste nye værdi)
   Serial.print(moisPercent1); //Her skriver vi vores fugt niveau i procent på vores sketch monitor
   Serial.println("%");// Så skriver vi bare % for at vi kan se det er % på vores sketch monitor
   if (moisPercent1 > 80) //Her spørger vi programmet om fugt niveauet er over 80%
